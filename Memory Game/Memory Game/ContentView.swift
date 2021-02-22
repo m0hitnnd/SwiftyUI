@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var viewModel: EmojiMemoryViewModel
     var body: some View {
         HStack {
-            ForEach(0..<4) {_ in
-                CardView(isVisible: false)
+            ForEach(viewModel.cards) { card in
+                CardView(model: card)
+                    .onTapGesture { viewModel.cardTapped(card) }
                     .foregroundColor(Color.orange)
                     .padding()
             }
@@ -21,12 +23,13 @@ struct ContentView: View {
 
 
 struct CardView: View {
-    var isVisible: Bool
+    var model: MemoryGameModel<String>.Card
+    
     var body: some View {
         ZStack {
-            if isVisible {
+            if model.isVisible {
                 RoundedRectangle(cornerRadius: 10).stroke()
-                Text("👻")
+                Text(model.content)
             } else {
                 RoundedRectangle(cornerRadius: 10)
             }
@@ -49,7 +52,7 @@ struct CardView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ContentView()
+            ContentView(viewModel: EmojiMemoryViewModel())
         }
     }
 }
