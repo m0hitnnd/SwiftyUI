@@ -26,12 +26,15 @@ struct CardView: View {
     var model: MemoryGameModel<String>.Card
     
     var body: some View {
-        ZStack {
-            if model.isVisible {
-                RoundedRectangle(cornerRadius: 10).stroke()
-                Text(model.content)
-            } else {
-                RoundedRectangle(cornerRadius: 10)
+        GeometryReader { geometry  in
+            ZStack {
+                if model.isVisible {
+                    RoundedRectangle(cornerRadius: 10).stroke()
+                    Text(model.content)
+                        .font(Font.system(size: geometry.size.width * 0.75))
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                }
             }
         }
     }
